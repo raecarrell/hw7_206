@@ -118,7 +118,7 @@ def nationality_search(countries, cur, conn):
 
 
 def birthyear_nationality_search(age, country, cur, conn):
-    threshold = 2023-age
+    threshold = (2023 - age)
     cur.execute("""
         SELECT name, nationality, birthyear
         FROM Players
@@ -146,7 +146,16 @@ def birthyear_nationality_search(age, country, cur, conn):
     # HINT: You'll have to use JOIN for this task.
 
 def position_birth_search(position, age, cur, conn):
-       pass
+    threshold = (2023 - age)
+    cur.execute("""
+    SELECT Players.name, Positions.position, Players.birthyear
+    FROM Players
+    JOIN Positions ON Players.position_id = Positions.id
+    WHERE Positions.position = ? AND Players.birthyear > ?
+    """, (position, threshold)
+    )
+    result = cur.fetchall()
+    return result
 
 
 # [EXTRA CREDIT]
